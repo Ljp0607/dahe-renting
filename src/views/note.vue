@@ -1,46 +1,33 @@
 <script setup="props" lang="ts">
 import { reactive, onMounted } from "vue";
 import request from "@/api/modules/renting";
+import indexList from "@/components/indexList.vue";
 //解构赋值经纬度和userid
 
 const data: any = reactive({
   policy: [],
+  homeList: [],
+  resh: "more",
+  page_index: 0,
 });
 //调用接口获取主页数据
-// function getData() {
-//   request({
-//     url: "houseResource",
-//     data: {
-//       page_count: 5,
-//       userId: usestore.userId,
-//       page_index: data.page_index,
-//     },
-//     method: "GET",
-//     success: (res) => {
-//       // console.log(123, res);
-//       if (res.data.productionList.length == 0) {
-//         data.status = "no-more";
-//         return;
-//       }
-//       if (res.state == 1) {
-//         data.homeList = [...data.homeList, ...res.data.productionList];
-//         //初始化标签
-//         for (let i in data.homeList) {
-//           if (data.homeList[i].memo) {
-//             data.homeList[i].tip = data.homeList[i].memo.split(",")[0];
-//             data.homeList[i].feature = data.homeList[i].memo.split(",")[1];
-//           }
-//           data.homeList[i].rent = data.homeList[i].rentType.slice(1);
-//         }
-//         if (res.data.productionList.length < 5) {
-//           data.state = "no-more";
-//         } else {
-//           data.status = "more";
-//         }
-//       }
-//     },
-//   });
-// }
+function getData() {
+  request
+    .houseResource({
+      page_index: data.page_index,
+      page_count: 5,
+    })
+    .then((res: any) => {
+      if (res.productionList.length >= 5) {
+        data.homeList = [...data.homeList, ...res.productionList];
+        data.resh = "more";
+      } else {
+        data.homeList = [...data.homeList, ...res.productionList];
+        data.resh = "no-more";
+      }
+    });
+}
+
 //获取政策
 function policy() {
   request.getHouseInfo({ type: "4" }).then((res: any) => {
@@ -53,8 +40,35 @@ function navigetPolicy(url: string) {
     window.location.href = url;
   }
 }
+//上拉刷新
+function refresh() {
+  if (data.resh == "loading" || data.resh == "no-more") {
+    return;
+  } else {
+    let scroll =
+      document.body.scrollHeight -
+      (document.body.clientHeight && document.documentElement.clientHeight) -
+      (document.documentElement && document.documentElement.scrollTop);
+    if (scroll <= 0) {
+      data.resh = "loading";
+      data.page_index++;
+      setTimeout(() => {
+        getData();
+      }, 500);
+    }
+  }
+}
+//监控滑动是否到达底部
+window.addEventListener(
+  "touchmove",
+  () => {
+    refresh();
+  },
+  true
+);
 onMounted(() => {
   policy();
+  getData();
   console.log(data);
 });
 //下拉刷新
@@ -78,7 +92,15 @@ onMounted(() => {
     </header>
     <main>
       <div class="title">官方房源</div>
-      <!-- <indexList :homeList="data.homeList" :userId="usestore.userId" /> -->
+
+      <indexList :homeList="data.homeList" />
+      <!-- 加载更多 -->
+      <van-loading
+        v-show="data.resh == 'loading'"
+        class="loading"
+        color="#0094ff"
+        >加载中...</van-loading
+      >
     </main>
   </div>
 </template>
@@ -144,6 +166,12 @@ onMounted(() => {
       font-size: 36px;
       font-weight: bold;
       color: #303030;
+    }
+    .loading {
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }

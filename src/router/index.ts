@@ -37,7 +37,8 @@ const router = createRouter({
     {
       path: '/details',
       name: 'details',
-      component: () => import('@/views/details.vue')
+      // params: { houseResourceNo: '' },
+      component: () => import('@/views/details.vue'),
     },
     //房管政策
     {
@@ -46,7 +47,7 @@ const router = createRouter({
       component: () => import('@/views/note.vue')
     },
 
-  ]
+  ],
 })
 
 export default router

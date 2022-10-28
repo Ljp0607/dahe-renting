@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import {  reactive, onMounted } from "vue";
 import request from "@/api/modules/renting";
 import { Toast } from "vant";
 import "vant/es/toast/style";
+import { useStore } from "@/stores/counter";
+const store = useStore();
+
 //解构赋值经纬度和userid
 const data: any = reactive({
   color: "#D3D3D3",
   house: {},
-  houseResourceNo: "",
   show: false,
   code: "",
   comment: [
@@ -31,20 +33,18 @@ const data: any = reactive({
     },
   ],
 });
-
 //获取当前房源信息
 function getHouseResource() {
   request
     .houseResource({
       userId: "23332",
-      houseResourceNo: "a2f8ded200b74c4f9f0a872f1dc049bc",
+      houseResourceNo: store.$state.houseResourceNo,
     })
     .then((res: any) => {
       data.house = res.productionList[0];
       data.house.houseResourceType = data.house.houseResourceType.slice(1, 3);
       data.house.rentType = data.house.rentType.slice(1, 3);
       data.house.memo = data.house.memo.split(",");
-      console.log(res.productionList[0]);
       if (data.house.isCollectFlag == 1) {
         data.color = "#02B168";
       }
@@ -61,7 +61,7 @@ function favClick() {
 //收藏房源
 function addMyCollect() {
   request
-    .addMyCollect("23332", "a2f8ded200b74c4f9f0a872f1dc049bc")
+    .addMyCollect("23332", store.$state.houseResourceNo)
     .then((res: any) => {
       Toast(res.data);
       if (res.state == 1) {
@@ -72,7 +72,7 @@ function addMyCollect() {
 //取消收藏
 function cancelMyCollect() {
   request
-    .cancelMyCollect("23332", "a2f8ded200b74c4f9f0a872f1dc049bc")
+    .cancelMyCollect("23332", store.$state.houseResourceNo)
     .then((res: any) => {
       Toast(res.data);
       if (res.state == 0) {
@@ -169,7 +169,6 @@ onMounted(() => {
         <img class="line" src="@/assets/detail/line0.png" alt="" />
       </div>
     </div>
-    <!-- https://github.com/Ljp0607/dahe-renting.git -->
     <footer>
       <div class="fav" @click="favClick">
         <van-icon name="star" size="30" :color="data.color" />
@@ -182,7 +181,6 @@ onMounted(() => {
     <van-overlay :show="data.show" @click="data.show = false">
       <div class="wrapper">
         <div>
-          <!-- <img :src="data.code" alt="" /> -->
           <van-image
             width="10rem"
             height="10rem"
@@ -190,7 +188,6 @@ onMounted(() => {
             :src="data.code"
           />
         </div>
-        <!-- <div class="block" /> -->
       </div>
     </van-overlay>
   </div>
