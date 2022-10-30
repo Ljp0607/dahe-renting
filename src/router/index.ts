@@ -11,7 +11,7 @@ const router = createRouter({
       name: 'index',
       component: () => import('@/views/index.vue'),
       meta: {
-        title: '蜗蜗租房'
+        title: '蜗蜗租房',
       },
     },
     //收藏房源
@@ -20,7 +20,8 @@ const router = createRouter({
       name: 'collect',
       component: () => import('@/views/collect.vue'),
       meta: {
-        title: '收藏房源'
+        title: '收藏房源',
+        keepAlive: true,
       },
     },
     //租房福利 
@@ -38,7 +39,7 @@ const router = createRouter({
       path: '/details',
       name: 'details',
       // params: { houseResourceNo: '' },
-      component: () => import('@/views/details.vue'),
+      component: () => import('@/views/details.vue')
     },
     //房管政策
     {
@@ -46,7 +47,12 @@ const router = createRouter({
       name: 'note',
       component: () => import('@/views/note.vue')
     },
-
+    //房管政策
+    {
+      path: '/map',
+      name: 'map',
+      component: () => import('@/views/map.vue')
+    },
   ],
 })
 

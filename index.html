@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
   <title>蜗蜗租房</title>
   <style>
     body {
@@ -17,6 +19,14 @@
 <body>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      serviceHost: "http://152.136.144.141/_AMapService",
+    };
+    window._AMapSecurityConfig = {
+      securityJsCode: "5baf9db86c7f8a35c815a70cda2b1f28",
+    };
+  </script>
 </body>
 
 </html>

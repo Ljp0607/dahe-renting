@@ -78,12 +78,9 @@ onMounted(() => {});
 </template>
 <style lang="less" scoped>
 .listMain {
-  // margin: 0 22px;
-  background: #f5f5f5;
-  // 白底
   .listItem {
-    border-radius: 5px;
-    background: white;
+    // border-radius: 5px;
+    background: #fff;
     width: 750px;
     height: 236px;
     padding: 36px 0px 36px 59px;
@@ -127,7 +124,6 @@ onMounted(() => {});
 
       // 第二行
       .item_content {
-        margin: 3px 0;
         font-weight: 400;
         font-size: 24px;
       }
@@ -139,6 +135,7 @@ onMounted(() => {});
         font-size: 38px;
         font-weight: 600;
         color: #ec0101;
+        //
       }
       .item_discount2 {
         line-height: 1;
@@ -154,20 +151,18 @@ onMounted(() => {});
       }
       //第四行
       .item_tag {
-        margin-top: 3px;
-        width: 103px;
-        width: 100px;
-        height: 32px;
+        display: inline-block;
+        margin-top: 6px;
+        // height: 32px;
+        // line-height: 32px;
         border: 1px dashed #a1a1a1;
         padding: 2px 3px;
         box-sizing: border-box;
-        // background: red;
         color: #a1a1a1;
         font-size: 22px;
         font-weight: 400;
       }
     }
-
     .line {
       width: 630px;
       height: 2px;

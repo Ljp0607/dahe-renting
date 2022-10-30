@@ -11,22 +11,22 @@ const store = useStore();
 const data: any = reactive({
   grid: [
     {
-      src: "/src/assets/index/item1.png",
+      src: "https://imgcdn.dahebao.cn/20221029/20221029122532279312.png",
       text: "房管政策",
       url: "note",
     },
     {
-      src: "/src/assets/index/item2.png",
+      src: "https://imgcdn.dahebao.cn/20221029/20221029122554274555.png",
       text: "租房社区",
       url: "community",
     },
     {
-      src: "/src/assets/index/item3.png",
+      src: "https://imgcdn.dahebao.cn/20221029/20221029122610729771.png",
       text: "收藏房源",
       url: "collect",
     },
     {
-      src: "/src/assets/index/item4.png",
+      src: "https://imgcdn.dahebao.cn/20221029/20221029122622988301.png",
       text: "福利点我",
       url: "welfare",
     },
@@ -127,7 +127,7 @@ function refresh() {
       document.body.scrollHeight -
       (document.body.clientHeight && document.documentElement.clientHeight) -
       (document.documentElement && document.documentElement.scrollTop);
-    if (scroll <= 0) {
+    if (scroll <= 50) {
       data.resh = "loading";
       data.page_index++;
       setTimeout(() => {
@@ -138,7 +138,7 @@ function refresh() {
 }
 //监控滑动是否到达底部
 window.addEventListener(
-  "touchmove",
+  "scroll",
   () => {
     refresh();
   },
@@ -300,6 +300,9 @@ onMounted(() => {
     }
     ::v-deep .van-dropdown-menu__bar {
       border-radius: 22px 22px 0 0;
+    }
+    ::v-deep .van-popup {
+      position: absolute;
     }
   }
   .loading {
