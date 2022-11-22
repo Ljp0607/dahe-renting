@@ -58,7 +58,7 @@ function moreClick() {
 }
 //跳转更多好房详情页
 function navigat(e: string) {
-  store.changeHouse(e);
+  store.changeHouseNo(e);
   router.push({ name: "details" });
 }
 onMounted(() => {

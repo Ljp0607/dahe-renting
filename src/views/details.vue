@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {  reactive, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import request from "@/api/modules/renting";
 import { Toast } from "vant";
 import "vant/es/toast/style";
 import { useStore } from "@/stores/counter";
+import router from "@/router";
 const store = useStore();
 
 //解构赋值经纬度和userid
@@ -41,13 +42,15 @@ function getHouseResource() {
       houseResourceNo: store.$state.houseResourceNo,
     })
     .then((res: any) => {
-      data.house = res.productionList[0];
-      data.house.houseResourceType = data.house.houseResourceType.slice(1, 3);
-      data.house.rentType = data.house.rentType.slice(1, 3);
-      data.house.memo = data.house.memo.split(",");
+      data.house = res.productionList[0]; //解构赋值
+      data.house.houseResourceType = data.house.houseResourceType.slice(1, 3); //反参格式调整
+      data.house.rentType = data.house.rentType.slice(1, 3); //反参格式调整
+      data.house.memo = data.house.memo.split(","); //反参格式调整
       if (data.house.isCollectFlag == 1) {
         data.color = "#02B168";
       }
+      //存入房源信息
+      store.changeHouse(data.house);
     });
 }
 //收藏
@@ -80,20 +83,15 @@ function cancelMyCollect() {
       }
     });
 }
-// //获取房源二维码
-function getCode() {
-  request
-    .getHouseInfo({
-      type: 2,
-    })
-    .then((res: any) => {
-      data.code = res[0].img;
-    });
-}
+// 跳转地图
+// function navigetMap() {
+//   router.push("/map");
+// }
 
 onMounted(() => {
   getHouseResource(); //房源信息
-  getCode(); //二维码
+  // getCode(); //二维码
+  // console.log(store.$state.house);
 });
 </script>
 <template>
@@ -147,11 +145,15 @@ onMounted(() => {
         <div class="room-content">{{ data.house.rentType }}</div>
       </div>
     </div>
+    <!-- 详细信息 -->
     <div class="details">{{ data.house.houseResourceDesc }}</div>
-    <div class="map">
+    <!-- 附近地图 -->
+    <div class="map" @click="router.push('/map')">
       <img src="@/assets/detail/house.png" />
       <div class="locationName">{{ data.house.locationName }}</div>
     </div>
+
+    <!-- 评论列表 -->
     <div class="comment">
       <div v-for="(item, index) in data.comment" :key="index">
         <img class="img" :src="item.avatar" alt="" />
@@ -169,6 +171,7 @@ onMounted(() => {
         <img class="line" src="@/assets/detail/line0.png" alt="" />
       </div>
     </div>
+    <!-- 底部收藏 -->
     <footer>
       <div class="fav" @click="favClick">
         <van-icon name="star" size="30" :color="data.color" />
@@ -185,7 +188,7 @@ onMounted(() => {
             width="10rem"
             height="10rem"
             fit="cover"
-            :src="data.code"
+            :src="data.house.qrCodeImg"
           />
         </div>
       </div>

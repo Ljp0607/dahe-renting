@@ -21,7 +21,7 @@ function navigat(item: any) {
   if (store.$state.userId == "") {
     Toast("登录后查看房源详情");
   } else {
-    store.changeHouse(item);
+    store.changeHouseNo(item);
     router.push({ name: "details" });
   }
 }

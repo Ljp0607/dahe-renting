@@ -5,14 +5,25 @@ export const useStore = defineStore('main',
   {
     state: () => ({
       userId: "",
-      houseResourceNo: ""
+      houseResourceNo: "",
+      house: {
+        isCollectFlag: "",
+        houseResourceImg: "",
+        houseResourceName: "",
+        locationName: "",
+        rentType: "",
+        memo: []
+      }
     }),
     actions: {
       changeUserId(e: any) {
         this.userId = e
       },
-      changeHouse(e: string) {
+      changeHouseNo(e: string) {
         this.houseResourceNo = e
+      },
+      changeHouse(e: any) {
+        this.house = e
       }
     }
   }
